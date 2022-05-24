@@ -1,0 +1,38 @@
+.opciones{
+  
+  z-index: 2;
+  position: fixed;
+  bottom: 3rem;
+  left: 1rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+}
+@media (min-width: 992px) {
+  .opciones {
+    /* width: 30%; */
+    left: 35%;
+    margin: 0 auto;
+
+
+  }
+}
+
+.filtros{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  
+  
+}
+
+@media (min-width: 768px){
+    .filtros{
+      flex-direction: row;
+      justify-content: center;
+    }
+}
