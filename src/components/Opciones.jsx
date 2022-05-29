@@ -1,24 +1,33 @@
-import React, { useContext, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import useMaps from "../hooks/useMaps";
 import { nivelesEscolares } from "../static";
 
 const Opciones = () => {
-  const { setCoords, filtrarEscuelas } = useMaps();
+  const { setCoords, setOpciones, opciones } = useMaps();
 
-  const [checkedState, setcheckedState] = useState(new Array(4).fill(false));
+  const [checkedState, setCheckedState] = useState(new Array(4).fill(false));
 
+  const handleChecked = (event, position) => {
+    const updatedCheckedState = checkedState.map((opcion, index) => {
+      return index === position ? !opcion : opcion;
+    });
+    setCheckedState(updatedCheckedState);
 
-  const handleOpciones = (e) => {
-    const opcion = nivelesEscolares[e.target.value];
+    const opcionSeleccionada = event.target.value;
 
-    console.log(opcion);
-    // setOpciones([opcion]);
-    filtrarEscuelas(opcion);
+    if (updatedCheckedState[position]) {
+      setOpciones([...opciones, opcionSeleccionada]);
+    } else {
+      const opcionesActualizadas = opciones.filter((opcion) => {
+        return opcion != opcionSeleccionada;
+      });
+      setOpciones(opcionesActualizadas);
+    }
   };
 
   const handleClick = () => {
     if (!navigator.geolocation) {
-      console.log("Tu navegador no soporta la geoloclizacion");
+      console.log("Tu navegador no soporta la geolocalizacion");
     }
     navigator.geolocation.getCurrentPosition(({ coords }) => {
       const pos = {
@@ -31,56 +40,27 @@ const Opciones = () => {
   return (
     <div className="opciones">
       <div className="filtros mb-3">
-        <div className="d-flex justify-content-between align-items-center">
-          <label className="me-3" htmlFor="primaria">
-            Primaria
-          </label>
-          <input
-            type="checkbox"
-            name="primaria"
-            id="primaria"
-            value="primaria"
-            onChange={handleOpciones}
-          />
-        </div>
-
-        <div className="d-flex justify-content-between align-items-center">
-          <label className="me-3" htmlFor="secundaria">
-            Secundaria
-          </label>
-
-          <input
-            type="checkbox"
-            name="secundaria"
-            id="secundaria"
-            value="secundaria"
-            onChange={handleOpciones}
-          />
-        </div>
-        <div className="d-flex justify-content-between align-items-center">
-          <label className="me-3" htmlFor="bachillerato">
-            Bachillerato
-          </label>
-          <input
-            type="checkbox"
-            name="bachillerato"
-            id="bachillerato"
-            value="bachillerato"
-            onChange={handleOpciones}
-          />
-        </div>
-        <div className="d-flex justify-content-between align-items-center">
-          <label className="me-3" htmlFor="universidad">
-            Universidad
-          </label>
-          <input
-            type="checkbox"
-            name="universidad"
-            id="universidad"
-            value="universidad"
-            onChange={handleOpciones}
-          />
-        </div>
+        {nivelesEscolares.map(({ nombre }, index) => (
+          <div
+            key={nombre}
+            className="d-flex justify-content-between align-items-center"
+          >
+            <label className="me-3" htmlFor={nombre}>
+              {nombre}
+            </label>
+            <input
+              className="me-3"
+              type="checkbox"
+              name={nombre}
+              id={nombre}
+              value={nombre.toLocaleUpperCase()}
+              checked={checkedState[index]}
+              onChange={(e) => {
+                handleChecked(e, index);
+              }}
+            />
+          </div>
+        ))}
       </div>
       <input
         onClick={handleClick}

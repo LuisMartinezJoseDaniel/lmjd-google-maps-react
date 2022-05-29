@@ -1,65 +1,83 @@
 import {
-  useJsApiLoader,
   GoogleMap,
+  InfoWindow,
   Marker,
   MarkerClusterer,
 } from "@react-google-maps/api";
+import { useMemo, useState } from "react";
 
 import useMaps from "../hooks/useMaps";
+import MarkerInfo from "./MarkerInfo";
 import Opciones from "./Opciones";
-
 
 const MapComponent = () => {
   const { coords, marcadores } = useMaps();
 
-  const center = { lat: 17.008445329530776, lng: -96.7555806258731 };
+  //Memorizar estas coordenadas
+  const center = useMemo(
+    () => ({
+      lat: 17.008445329530776,
+      lng: -96.7555806258731,
+    }),
+    []
+  );
+  //Limpiar el mapa
+  const mapOptions = useMemo(
+    () => ({
+      mapId: "1454c180ca420936",
+      disableDefaultUI: true,
+      clickableIcons: false,
+    }),
+    []
+  );
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCKjO2pMOuWGIDCZYUEC_V0_hPVUNLvyiU",
-  });
-
-  if (!isLoaded) {
-    return;
-  }
-
-  const options = {
+  const clusterOptions = {
     imagePath:
       "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
   };
 
+  const customIcon = {
+    url: "https://img.icons8.com/fluency/344/map-marker.png",
+    scaledSize: new google.maps.Size(34, 34),
+  };
+
   return (
-    <div className="w-100" style={{ height: "100vh" }}>
+    <div className="w-100 height-100">
       <Opciones />
-
-      <GoogleMap
-        center={center}
-        zoom={8}
-        mapContainerStyle={{ width: "100%", height: "100%" }}
-      >
-        {Object.keys(coords).length > 0 && (
-          <Marker
-            position={center}
-            animation={window.google.maps.Animation.DROP}
-          />
-        )}
-
-        {marcadores.length > 0 && (
-          <MarkerClusterer
-            options={options}
-
-          >
-            {(clusterer) =>
-              marcadores.map((marcador) => (
-                <Marker
-                  key={marcador.id}
-                  position={{ lat: marcador.lat, lng: marcador.lng }}
-                  clusterer={clusterer}
-                />
-              ))
-            }
-          </MarkerClusterer>
-        )}
-      </GoogleMap>
+      <div>
+        <GoogleMap
+          center={center}
+          zoom={8}
+          mapContainerClassName="map-container"
+          options={mapOptions}
+        >
+          {/* Mi ubicacion */}
+          {Object.keys(coords).length > 0 && (
+            <MarkerInfo
+              coords={coords}
+              nombre="Mi ubicación"
+              icon={customIcon}
+            />
+          )}
+          {/* Marcadoes de la base de datos */}
+          {marcadores.length > 0 && (
+            <MarkerClusterer options={clusterOptions} gridSize={ 20 }>
+              {/* MarkerCluster necesita una funcion por defecto */}
+              {(clusterer) =>
+                marcadores.map((marcador) => (
+                  <MarkerInfo
+                    key={marcador.id}
+                    nombre={marcador.nombre}
+                    coords={{ lat: marcador.lat, lng: marcador.lng }}
+                    clusterer={clusterer}
+                    texto={marcador.nivel}
+                  />
+                ))
+              }
+            </MarkerClusterer>
+          )}
+        </GoogleMap>
+      </div>
     </div>
   );
 };
