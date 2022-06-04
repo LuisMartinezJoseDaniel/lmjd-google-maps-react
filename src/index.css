@@ -1,4 +1,8 @@
-/* Helpers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Helpers
 .height-100{
   height: 100vh;
 
@@ -12,13 +16,13 @@
 
 }
 /*Mapas*/
-.map-container {
+/* .map-container {
   width: 100%;
   height: 100vh;
-}
+} */
 
 /*Opciones checkboxes*/
-.opciones{
+/* .opciones{
   
   z-index: 2;
   position: fixed;
@@ -35,7 +39,7 @@
 @media (min-width: 992px) {
   .opciones {
     /* width: 30%; */
-    left: 35%;
+    /* left: 35%;
     margin: 0 auto;
 
 
@@ -48,11 +52,11 @@
   gap: 1rem;
   
   
-}
+} */ 
 
-@media (min-width: 768px){
+/* @media (min-width: 768px){
     .filtros{
       flex-direction: row;
       justify-content: center;
     }
-}
+} */

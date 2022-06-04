@@ -42,42 +42,37 @@ const MapComponent = () => {
   };
 
   return (
-    <div className="w-100 height-100">
-      <Opciones />
-      <div>
-        <GoogleMap
-          center={center}
-          zoom={8}
-          mapContainerClassName="map-container"
-          options={mapOptions}
-        >
-          {/* Mi ubicacion */}
-          {Object.keys(coords).length > 0 && (
-            <MarkerInfo
-              coords={coords}
-              nombre="Mi ubicación"
-              icon={customIcon}
-            />
-          )}
-          {/* Marcadoes de la base de datos */}
-          {marcadores.length > 0 && (
-            <MarkerClusterer options={clusterOptions} gridSize={ 20 }>
-              {/* MarkerCluster necesita una funcion por defecto */}
-              {(clusterer) =>
-                marcadores.map((marcador) => (
-                  <MarkerInfo
-                    key={marcador.id}
-                    nombre={marcador.nombre}
-                    coords={{ lat: marcador.lat, lng: marcador.lng }}
-                    clusterer={clusterer}
-                    texto={marcador.nivel}
-                  />
-                ))
-              }
-            </MarkerClusterer>
-          )}
-        </GoogleMap>
-      </div>
+    <div className="" >
+      
+      <GoogleMap
+        center={center}
+        zoom={8}
+        mapContainerClassName="h-screen"
+        options={mapOptions}
+      
+      >
+        {/* Mi ubicacion */}
+        {Object.keys(coords).length > 0 && (
+          <MarkerInfo coords={coords} nombre="Mi ubicación" icon={customIcon} />
+        )}
+        {/* Marcadoes de la base de datos */}
+        {marcadores.length > 0 && (
+          <MarkerClusterer options={clusterOptions} gridSize={20}>
+            {/* MarkerCluster necesita una funcion por defecto */}
+            {(clusterer) =>
+              marcadores.map((marcador) => (
+                <MarkerInfo
+                  key={marcador.id}
+                  nombre={marcador.nombre}
+                  coords={{ lat: marcador.lat, lng: marcador.lng }}
+                  clusterer={clusterer}
+                  texto={marcador.nivel}
+                />
+              ))
+            }
+          </MarkerClusterer>
+        )}
+      </GoogleMap>
     </div>
   );
 };

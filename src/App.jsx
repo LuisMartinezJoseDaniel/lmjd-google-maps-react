@@ -1,5 +1,6 @@
 import { useJsApiLoader } from "@react-google-maps/api";
 import MapComponent from "./components/MapComponent";
+import Opciones from "./components/Opciones";
 import { MapsProvider } from "./context/MapsProvider";
 
 
@@ -14,7 +15,14 @@ function App() {
 
   return (
     <MapsProvider>
-      <MapComponent />
+      <div className="md:flex bg-cyan-900">
+        <aside className="md:w-2/12">
+          <Opciones />
+        </aside>
+        <main className="md:w-full h-screen">
+          <MapComponent />
+        </main>
+      </div>
     </MapsProvider>
   );
 }

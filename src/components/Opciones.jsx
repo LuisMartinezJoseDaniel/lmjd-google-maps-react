@@ -38,18 +38,15 @@ const Opciones = () => {
     });
   };
   return (
-    <div className="opciones">
-      <div className="filtros mb-3">
+    <div className="flex flex-col justify-between	h-full">
+      <div className="p-5">
         {nivelesEscolares.map(({ nombre }, index) => (
-          <div
-            key={nombre}
-            className="d-flex justify-content-between align-items-center"
-          >
-            <label className="me-3" htmlFor={nombre}>
+          <div key={nombre} className="flex justify-between items-center mb-5">
+            <label className="text-white font-bold cursor-pointer" htmlFor={nombre}>
               {nombre}
             </label>
             <input
-              className="me-3"
+              className="checked:bg-red-500"
               type="checkbox"
               name={nombre}
               id={nombre}
@@ -66,7 +63,7 @@ const Opciones = () => {
         onClick={handleClick}
         type="button"
         value="Ir a mi ubicacion"
-        className="btn btn-primary"
+        className="uppercase p-5 bg-indigo-700 font-bold text-white cursor-pointer"
       />
     </div>
   );
