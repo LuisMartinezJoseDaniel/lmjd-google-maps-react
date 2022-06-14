@@ -16,7 +16,7 @@ export function getFiltros(opciones) {
   //   filtros += filtro;
   // });
   // return filtros;
-
+  // Dependencia para filtros en strapi
   return qs.stringify({
     filters: {
       nivel: {

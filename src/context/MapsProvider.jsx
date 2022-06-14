@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import { getFiltros } from "../static";
-import qs from 'qs'
 
 const MapsContext = createContext();
 
@@ -16,8 +15,6 @@ const MapsProvider = ({ children }) => {
     }
     const filtrarEscuelas = async () => {
       try {
-
-
         // http://localhost:1337/api/escuelas?filters[nivel][$contains]=PRIMARIA
         // const filters = `filters[nivel][$eq]=${'PRIMARIA'}`;
 
@@ -25,7 +22,8 @@ const MapsProvider = ({ children }) => {
         const url = `http://localhost:1337/api/escuelas?${filters}`;
         const resp = await fetch(url);
         const { data } = await resp.json();
-
+        
+        // limpiar datos
         const arrayCoordenadas = data.map(({ id, attributes }) => ({
           id,
           nombre: attributes.nombre,
@@ -34,13 +32,16 @@ const MapsProvider = ({ children }) => {
           lng: attributes.longitud,
           nivel: attributes.nivel,
         }));
-        
+        // crear arreglo de marcadores
         setMarcadores(arrayCoordenadas);
       } catch (error) {
         console.log(error);
       }
     };
     filtrarEscuelas();
+
+    return () => { setMarcadores( [] ) }
+    
   }, [opciones]);
 
   return (

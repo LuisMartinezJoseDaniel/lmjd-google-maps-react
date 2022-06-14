@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import { InfoWindow, Marker } from "@react-google-maps/api";
 import { useState } from "react";
@@ -25,8 +26,8 @@ const MarkerInfo = ( { coords, nombre , icon, clusterer, texto } ) => {
     <Marker
       position={coords}
       animation={window.google.maps.Animation.DROP}
-      label={{ ...labelOptions, text: texto ?? "Mi Ubicación" }}
-      icon={icon ?? null}
+      label={{ ...labelOptions, text: texto }}
+      icon={icon}
       clusterer={ clusterer ?? null }
       onClick={() => setIsMarkerActive(!isMarkerActive)}
     >
@@ -48,5 +49,21 @@ const MarkerInfo = ( { coords, nombre , icon, clusterer, texto } ) => {
     </Marker>
   );
 }
+
+MarkerInfo.propTypes = {
+  texto: PropTypes.string,
+  icon : PropTypes.object,
+  nombre : PropTypes.string,
+  coords : PropTypes.object.isRequired,
+  
+}
+
+MarkerInfo.defaultProps = {
+  texto: "Mi ubicion",
+  icon: null,
+  clusterer: null,
+  nombre: "Mi ubicación"
+};
+
 
 export default MarkerInfo
