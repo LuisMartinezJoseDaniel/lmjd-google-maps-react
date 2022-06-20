@@ -1,29 +1,37 @@
 import React, { Fragment, useContext, useState } from "react";
+import PropTypes from "prop-types"
 import useMaps from "../hooks/useMaps";
 import { nivelesEscolares } from "../static";
 
-const Opciones = () => {
+const Opciones = ({tipo}) => {
   const { setCoords, setOpciones, opciones } = useMaps();
 
   const [checkedState, setCheckedState] = useState(new Array(4).fill(false));
 
-  const handleChecked = (event, position) => {
+  const handleChecked = ( event, position ) => {
     const updatedCheckedState = checkedState.map((opcion, index) => {
       return index === position ? !opcion : opcion;
-    });
+    } );
     setCheckedState(updatedCheckedState);
 
     const opcionSeleccionada = event.target.value;
 
+    
     if (updatedCheckedState[position]) {
-      setOpciones([...opciones, opcionSeleccionada]);
+      setOpciones([...opciones, opcionSeleccionada]); //checkbox
     } else {
+      //Evitar duplicados
       const opcionesActualizadas = opciones.filter((opcion) => {
         return opcion != opcionSeleccionada;
       });
       setOpciones(opcionesActualizadas);
     }
   };
+  // Cambiar checked, name y type en el input
+  const handleRadio = ( e ) => {
+    const opcionSeleccionada = e.target.value;
+    setOpciones( [opcionSeleccionada] ); // RadioButton
+  }
 
   const handleClick = () => {
     if (!navigator.geolocation) {
@@ -39,23 +47,23 @@ const Opciones = () => {
   };
   return (
     <div className="flex flex-col justify-between	h-full">
-      <div className="p-5">
+      <div className="p-5 grid grid-cols-2 gap-3 md:grid-cols-1">
         {nivelesEscolares.map(({ nombre }, index) => (
-          <div key={nombre} className="flex justify-between items-center mb-5">
+          <div key={nombre} className="flex items-center gap-3">
+            <input
+              className="checked:bg-red-500"
+              type={ tipo } 
+              name={tipo === "checkbox"? nombre: "nivel"}
+              id={nombre}
+              value={nombre.toLocaleUpperCase()}
+              checked={tipo === "checkbox"? checkedState[index]: null}
+              onChange={( e ) => {
+                tipo === "checkbox" ? handleChecked(e, index) : handleRadio(e);
+              }}
+            />
             <label className="text-white font-bold cursor-pointer" htmlFor={nombre}>
               {nombre}
             </label>
-            <input
-              className="checked:bg-red-500"
-              type="checkbox"
-              name={nombre}
-              id={nombre}
-              value={nombre.toLocaleUpperCase()}
-              checked={checkedState[index]}
-              onChange={(e) => {
-                handleChecked(e, index);
-              }}
-            />
           </div>
         ))}
       </div>
@@ -68,5 +76,14 @@ const Opciones = () => {
     </div>
   );
 };
+
+Opciones.propTypes = {
+  tipo: PropTypes.string.isRequired
+}
+
+Opciones.defaultProps = {
+  tipo: "checkbox"
+}
+
 
 export default Opciones;

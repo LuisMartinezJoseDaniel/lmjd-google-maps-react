@@ -15,8 +15,6 @@ const MapsProvider = ({ children }) => {
     }
     const filtrarEscuelas = async () => {
       try {
-        // http://localhost:1337/api/escuelas?filters[nivel][$contains]=PRIMARIA
-        // const filters = `filters[nivel][$eq]=${'PRIMARIA'}`;
 
         const filters = getFiltros(opciones);
         const url = `http://localhost:1337/api/escuelas?${filters}`;

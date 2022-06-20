@@ -5,10 +5,11 @@ import { MapsProvider } from "./context/MapsProvider";
 
 
 function App() {
+  // Revisar que el API KEY se cargue correctamente
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_API_KEY,
   });
-
+  
   if (!isLoaded) {
     return;
   }
@@ -16,8 +17,8 @@ function App() {
   return (
     <MapsProvider>
       <div className="md:flex bg-cyan-900">
-        <aside className="md:w-2/12">
-          <Opciones />
+        <aside className="md:w-3/12">
+          <Opciones tipo="checkbox"/>
         </aside>
         <main className="md:w-full h-screen">
           <MapComponent />

@@ -7,27 +7,28 @@ export const nivelesEscolares = [
   { nombre: "SUPERIOR" },
 ];
 
-// const filters = `filters[nivel][$eq]=${opcion}`;
+// http://localhost:1337/api/escuelas?filters[nivel][$contains]=PRIMARIA
+// const filters = `filters[nivel][$eq]=${'PRIMARIA'}`;
 
 export function getFiltros(opciones) {
-  // let filtros = "";
-  // opciones.forEach((nivel, indice) => {
-  //   const filtro = `filters[nivel][$in][${indice}]=${nivel}&`;
-  //   filtros += filtro;
-  // });
-  // return filtros;
   // Dependencia para filtros en strapi
   return qs.stringify({
     filters: {
       nivel: {
         $in: opciones,
       },
-      latitud: {
-        $ne: 0
-      },
-      longitud: {
-        $ne: 0
-      }
+      $and: [
+        {
+          latitud: {
+            $ne: 0,
+          },
+        },
+        {
+          longitud: {
+            $ne: 0,
+          },
+        },
+      ],
     },
   });
 }
